@@ -1,5 +1,5 @@
 import csv
-from dataclasses import astuple, dataclass, fields
+from dataclasses import asdict, astuple, dataclass, fields
 import logging
 import sys
 
@@ -63,15 +63,19 @@ logging.basicConfig(
               logging.StreamHandler(sys.stdout)])
 
 
-def write_quotes_to_csv(quotes: [Quote]) -> None:
-    with open("quotes.csv", "w") as f:
-        writer = csv.writer(f)
-        writer.writerow(QUOTE_FIELDS)
-        writer.writerows([astuple(quote) for quote in quotes])
+def write_quotes_to_csv(quotes: list[Quote], output_csv_path: str) -> None:
+    with open(output_csv_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=QUOTE_FIELDS)
+        writer.writeheader()
+
+        for quote in quotes:
+            row = asdict(quote)
+            row["tags"] = ",".join(row["tags"])
+            writer.writerow(row)
 
 
 def main(output_csv_path: str) -> None:
-    write_quotes_to_csv(get_all_quotes())
+    write_quotes_to_csv(get_all_quotes(), output_csv_path)
 
 
 if __name__ == "__main__":
