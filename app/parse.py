@@ -52,7 +52,8 @@ def get_all_quotes() -> [Quote]:
         logging.info(F"Start parsing page #{i}")
         all_quotes.extend(get_home_quotes())
     return all_quotes
-  
+
+ 
 QUOTE_FIELDS = [field.name for field in fields(Quote)]
 
 logging.basicConfig(
@@ -61,7 +62,7 @@ logging.basicConfig(
     handlers=[
         logging.FileHandler("parser.log"),
         logging.StreamHandler(sys.stdout)
-    ]
+            ]
     )
 
 
