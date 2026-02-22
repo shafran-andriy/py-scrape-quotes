@@ -53,17 +53,14 @@ def get_all_quotes() -> [Quote]:
         all_quotes.extend(get_home_quotes())
     return all_quotes
 
- 
+
 QUOTE_FIELDS = [field.name for field in fields(Quote)]
 
 logging.basicConfig(
     level=logging.INFO,
     format="[%(levelname)8s]: %(message)s",
-    handlers=[
-        logging.FileHandler("parser.log"),
-        logging.StreamHandler(sys.stdout)
-            ]
-    )
+    handlers=[logging.FileHandler("parser.log"),
+              logging.StreamHandler(sys.stdout)])
 
 
 def write_quotes_to_csv(quotes: [Quote]) -> None:
