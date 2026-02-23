@@ -25,8 +25,8 @@ def parse_single_quote(quote: Tag) -> Quote:
     )
 
 
-def get_home_quotes() -> [Quote]:
-    text = requests.get(BASE_URL).content
+def get_home_quotes(url: str = BASE_URL) -> list[Quote]:
+    text = requests.get(url).content
     soup = BeautifulSoup(text, "html.parser")
     products = soup.select(".quote")
     return [parse_single_quote(product) for product in products]
@@ -45,12 +45,14 @@ def get_num_pages() -> int:
     return num_of_pages
 
 
-def get_all_quotes() -> [Quote]:
+def get_all_quotes() -> list[Quote]:
     all_quotes = []
     num_of_pages = get_num_pages()
+
     for i in range(1, num_of_pages + 1):
-        logging.info(F"Start parsing page #{i}")
-        all_quotes.extend(get_home_quotes())
+        logging.info(f"Start parsing page #{i}")
+        page_url = f"{BASE_URL}page/{i}/"
+        all_quotes.extend(get_home_quotes(page_url))
     return all_quotes
 
 
