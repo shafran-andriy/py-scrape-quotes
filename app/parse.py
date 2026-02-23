@@ -70,7 +70,7 @@ def write_quotes_to_csv(quotes: list[Quote], output_csv_path: str) -> None:
 
         for quote in quotes:
             row = asdict(quote)
-            row["tags"] = list(row["tags"])
+            row["tags"] = str(row["tags"])
             writer.writerow(row)
 
 
