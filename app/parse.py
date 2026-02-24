@@ -2,7 +2,6 @@ import csv
 from dataclasses import asdict, dataclass, fields
 import logging
 import sys
-from urllib import response
 
 from bs4 import BeautifulSoup, Tag
 import requests
@@ -36,6 +35,7 @@ def get_home_quotes(url: str = BASE_URL) -> list[Quote]:
     else:
         logging.warning(f"Failed to retrieve quotes from URL: {url}")
         return []
+
 
 def get_num_pages() -> int:
     num_of_pages = 0
