@@ -2,6 +2,7 @@ import csv
 from dataclasses import asdict, dataclass, fields
 import logging
 import sys
+from urllib import response
 
 from bs4 import BeautifulSoup, Tag
 import requests
@@ -26,11 +27,15 @@ def parse_single_quote(quote: Tag) -> Quote:
 
 
 def get_home_quotes(url: str = BASE_URL) -> list[Quote]:
-    text = requests.get(url).content
-    soup = BeautifulSoup(text, "html.parser")
-    products = soup.select(".quote")
-    return [parse_single_quote(product) for product in products]
-
+    response = requests.get(url)
+    if response.status_code == 200:
+        text = response.content
+        soup = BeautifulSoup(text, "html.parser")
+        products = soup.select(".quote")
+        return [parse_single_quote(product) for product in products]
+    else:
+        logging.warning(f"Failed to retrieve quotes from URL: {url}")
+        return []
 
 def get_num_pages() -> int:
     num_of_pages = 0
